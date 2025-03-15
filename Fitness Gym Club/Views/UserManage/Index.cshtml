@@ -1,0 +1,95 @@
+﻿@model List<dynamic>
+@{
+    ViewData["Title"] = "User Manage";
+    int index = 0;
+}
+<h1>User Manage</h1>
+
+<style>
+    thead {
+        background-color: #0d6efd;
+        color: white;
+        position: sticky;
+        top: -1px;
+    }
+    .table-wrapper {
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+</style>
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex form-group justify-content-between">
+            <a href="/Home/Index" class="btn btn-primary">Back</a>
+            <a href="/UserManage/AddNewUser" class="btn btn-primary">Create User</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper table-responsive">
+            <table class="table table-bordered mt-3 table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">No.</th>
+                        <th class="text-center" width="150">Action</th>
+                        <th style="min-width: 200px;">User's Full Name</th>
+                        <th class="text-center">Gender</th>
+                        <th>Email</th>
+                        <th style="min-width: 300px;">Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        index++;
+                        <tr>
+                            <td class="text-center">@index</td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-between">
+                                    <form asp-action="EditUser" asp-controller="UserManage" method="post">
+                                        <input value="@user.Id" name="Id" hidden />
+                                        <button class="btn btn-info">Edit</button>
+                                    </form>
+                                    <div class="ms-2">
+                                        <form asp-action="DeleteUser" asp-controller="UserManage" method="post">
+                                            <input value="@user.Id" name="Id" hidden />
+                                            <input value="@user.FullName" name="FullName" hidden />
+                                            <button class="btn btn-danger" id="btnDelete">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@user.FullName</td>
+                            <td class="text-center">@user.Gender</td>
+                            <td>@user.Email</td>
+                            <td>@string.Join(", ", user.Roles)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    td{
+        vertical-align: middle;
+    }
+</style>
+
+<!-- jQuery CDN link -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+
+    $(document).on('click', '#btnDelete', function() {
+        let closestTr = $(this).closest('tr');
+        let username = closestTr.find('input[name="FullName"]').val();
+        let response =  confirm(`Do you want delete this user "${username}" ?`);
+
+        if (response === true) {
+            closestTr.find('form').submit();
+        }
+    });
+
+</script>

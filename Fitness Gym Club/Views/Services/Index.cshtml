@@ -1,0 +1,136 @@
+﻿@{
+    ViewData["Title"] = "Services";
+}
+
+<style>
+    .wrapp-scrolling{
+        max-height: 80vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+</style>
+
+<h1>Services</h1>
+<div class="wrapp-scrolling">
+
+    <header class="hero bg-primary text-white text-center py-5">
+        <div class="container">
+            <h1 class="display-4">Get Fit With Us</h1>
+            <p class="lead">Join our gym today and achieve your fitness goals with expert trainers and top-tier equipment!</p>
+            <a asp-action="SignIn" asp-controller="Home" class="btn btn-light btn-lg">Join Now</a>
+        </div>
+    </header>
+
+    <section id="services" class="container py-5">
+        <h2 class="text-center mb-4">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Pictures/pic-1.jpg"  class="card-img-top" alt="Personal Training">
+                    <div class="card-body">
+                        <h5 class="card-title">Personal Training</h5>
+                        <p class="card-text">One-on-one sessions tailored to your fitness goals. Take care you body</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Pictures/pic-2.jpg"  class="card-img-top" alt="Group Classes">
+                    <div class="card-body">
+                        <h5 class="card-title">Group Classes</h5>
+                        <p class="card-text">Join our fun and motivating group workouts. Take care you body</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="~/Pictures/pic-3.jpg" class="card-img-top" alt="Nutrition Counseling">
+                    <div class="card-body">
+                        <h5 class="card-title">Nutrition Counseling</h5>
+                        <p class="card-text">Get personalized nutrition advice to fuel your workouts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Membership Pricing</h2>
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Basic Plan</h5>
+                            <p class="card-text">$29.99/month</p>
+                            <ul>
+                                <li>Access to gym equipment</li>
+                                <li>Basic Classes</li>
+                                <li>Open 7 Days a Week</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Premium Plan</h5>
+                            <p class="card-text">$59.99/month</p>
+                            <ul>
+                                <li>Everything in Basic</li>
+                                <li>Personal Trainer Sessions</li>
+                                <li>Unlimited Group Classes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Elite Plan</h5>
+                            <p class="card-text">$99.99/month</p>
+                            <ul>
+                                <li>Everything in Premium</li>
+                                <li>Nutrition Counseling</li>
+                                <li>Exclusive Classes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">What Our Members Say</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">"The trainers are amazing and the environment is so motivating!"</p>
+                            <footer class="blockquote-footer">John Doe</footer>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">"I’ve seen great results in just a few weeks. Best decision ever!"</p>
+                            <footer class="blockquote-footer">Jane Smith</footer>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">"The variety of classes is incredible. I’m never bored!"</p>
+                            <footer class="blockquote-footer">Michael Johnson</footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+

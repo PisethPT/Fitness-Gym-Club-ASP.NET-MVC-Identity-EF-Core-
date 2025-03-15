@@ -1,0 +1,28 @@
+﻿@{
+    var loggedIn = User.Identity!.IsAuthenticated;
+    string role = string.Empty;
+    if (User.IsInRole("Senior Supervisor"))
+        role = "Senior Supervisor";
+    else if (User.IsInRole("Customer"))
+        role = "Customer";
+    else
+        role = "Coach";
+}
+
+@if (loggedIn)
+{
+    <li class="nav-item">
+        <label class="nav-link text-dark" for="name">
+            @User.Identity.Name (@role)
+        </label>
+    </li>
+    <li class="nav-item">
+        <a class="btn btn-primary nav-link text-white" asp-action="UserSignOut" asp-controller="Home">Sign out</a>
+    </li>
+}
+else
+{
+    <li class="nav-item ms-2">
+        <a class="btn btn-primary nav-link text-white" asp-area="" asp-action="SignIn" asp-controller="Home" id="userbtn">Sign In</a>
+    </li>
+}

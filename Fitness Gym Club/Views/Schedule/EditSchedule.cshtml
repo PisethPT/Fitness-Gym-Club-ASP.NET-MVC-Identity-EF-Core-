@@ -1,0 +1,190 @@
+﻿@model Schedule
+@{
+    ViewData["Title"] = "Edit Schedules";
+}
+<!-- jQuery CDN link -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+    thead {
+        background-color: #0d6efd;
+        color: white;
+        position: sticky;
+        top: -1px;
+    }
+
+    .table-wrapper {
+        max-height: 45vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+</style>
+
+<h1>Edit Schedules</h1>
+
+<div class="card">
+    <div class="card-header">
+        <a href="/Schedule/Index" class="btn btn-primary">Back</a>
+    </div>
+    <div class="card-body">
+        <form asp-action="SaveEditSchedule" asp-controller="Schedule" method="post">
+            <div class="row">
+                <div class="form-group col-12 mt-2">
+                    <label asp-for="Type">Schedule Type</label>
+                    <select class="form-control" asp-for="Type" id="selectionScheduleType">
+                        <option value="1">Individual</option>
+                        <option value="2">Group Training</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                    <label asp-for="GymHallId">Coach Name</label>
+                    <select class="form-control" asp-for="CoachId" asp-items="Model.SelectCoachListItem">
+                    </select>
+                </div>
+                <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                    <label asp-for="GymHallId">Gym Halls</label>
+                    <select class="form-control" asp-for="GymHallId">
+                        <option value="1">Floor-1</option>
+                        <option value="2">Floor-2</option>
+                    </select>
+                </div>
+                <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                    <label asp-for="StartTime">Start Time</label>
+                    <input class="form-control" type="time" asp-for="StartTime" />
+                    <span asp-validation-for="StartTime" class="text-danger"></span>
+                </div>
+                <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                    <label asp-for="EndTime">End Time</label>
+                    <input class="form-control" type="time" asp-for="EndTime" />
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-primary mt-3 mb-2" type="button" onclick="addRow()" id="addNewButton">Add New</button>
+                <button class="btn btn-primary mt-3 mb-2" type="submit">Save</button>
+            </div>
+
+            <div class="table-wrapper table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="80">No.</th>
+                            <th class="text-center" width="100">Action</th>
+                            <th>Customer Name</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    td th {
+        vertical-align: middle;
+    }
+</style>
+
+<script>
+    let index = 0;
+    let selection = document.getElementById('selectionScheduleType');
+    let addNewButton = document.getElementById('addNewButton');
+
+    window.addEventListener('load', function(){
+       if(selection.value === '1'){
+           addNewButton.disabled = true;
+           addNewButton.style['backgroundColor'] = 'grey';
+           addNewButton.style['borderColor'] = 'grey';
+
+           const tbody = document.getElementById('table-body');
+
+           for(element = 1; element < tbody.rows.length; element = 1){
+              tbody.deleteRow(element);
+              index --;
+           }
+       }else{
+           addNewButton.disabled = false;
+           addNewButton.style['backgroundColor'] = '#0d6efd';
+           addNewButton.style['borderColor'] = '#0d6efd';
+       }
+
+       let customerlength = '@Model.CustomersId.Count()';
+       for(indexOf = 0; indexOf < customerlength; indexOf++){
+           addRow(indexOf);
+       }
+    });
+
+    selection.addEventListener('change', function(){
+       if(selection.value === '1'){
+           addNewButton.disabled = true;
+           addNewButton.style['backgroundColor'] = 'grey';
+           addNewButton.style['borderColor'] = 'grey';
+
+           const tbody = document.getElementById('table-body');
+
+           for(element = 1; element < tbody.rows.length; element = 1){
+              tbody.deleteRow(element);
+              index --;
+           }
+       }else{
+           addNewButton.disabled = false;
+           addNewButton.style['backgroundColor'] = '#0d6efd';
+           addNewButton.style['borderColor'] = '#0d6efd';
+       }
+    });
+
+
+    function addRow(indexOf) {
+        index ++;
+        const tableBody = document.getElementById("table-body");
+        const newRow = document.createElement("tr");
+        const noIndexCell = document.createElement("td");
+        const customerCell = document.createElement("td");
+        const deleteCell = document.createElement("td");
+        noIndexCell.innerHTML = `${index}`;
+        noIndexCell.className = 'text-center';
+        newRow.appendChild(noIndexCell);
+
+        deleteCell.innerHTML = `<button class="btn btn-danger" onclick="deleteRow(this)">Delete</button>`;
+        newRow.className = 'text-center';
+        newRow.appendChild(deleteCell);
+
+        customerCell.innerHTML = `<select class="form-control" name="CustomersId[${index-1}]"> </select>`;
+        newRow.appendChild(customerCell);
+
+        $.post('/Schedule/GetCustomers',{ indexOf : indexOf }, function(response) {
+            if (response.status) {
+                let options = '';
+                $.each(response.data, function(index, value) {
+                    options += `<option value="${value.value}">${value.text}</option>`;
+                });
+                $(customerCell).find('select').html(options);
+                if (indexOf !== undefined && indexOf !== null) {
+                $(customerCell).find('select').val(response.selectedIndex);
+            }
+            } else {
+                console.error('Error: ' + response.message);
+            }
+            }).fail(function(xhr, status, error) {
+                console.error('An error occurred during the POST request:', error);
+        });
+
+        tableBody.appendChild(newRow);
+    }
+
+    function deleteRow(button) {
+        const tableBody = document.getElementById("table-body");
+        if (tableBody.rows.length > 1) {
+            index--;
+            const row = button.closest("tr");
+            row.parentNode.removeChild(row);
+        } else {
+            console.log("Cannot delete the last row.");
+        }
+    }
+
+</script>

@@ -1,0 +1,137 @@
+﻿@model UserRoles
+@{
+    ViewData["Title"] = "User Roles";
+    int index = 0;
+}
+<!-- jQuery CDN link -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<style>
+    thead {
+        background-color: #0d6efd;
+        color: white;
+        position: sticky;
+        top: -1px;
+        
+    }
+
+    .table-wrapper {
+        max-height: 65vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+</style>
+
+<h1>User Roles</h1>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Create New Role</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="CreateRole" asp-controller="UserRoles" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Name">Role Name</label>
+                        <input class="form-control" asp-for="RoleName" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex form-group justify-content-between">
+            <a href="/Home/Index" class="btn btn-primary">Back</a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create Role</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <form asp-action="SearchUser" asp-controller="UserRoles" method="post" class="d-flex justify-content-between gap-4">
+                    <input class="form-control" type="search" placeholder="User Email" asp-for="Email" />
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-sm-12 col-12 mt-3">
+                <input asp-for="UserId" name="UserId" hidden />
+                <input class="form-control bg-light" type="text" placeholder="User Name" asp-for="UserName" readonly/>
+            </div>
+            <div class="col-xl-6 col-lg-6 col-sm-12 col-12 mt-3">
+                <input class="form-control bg-light" type="text" placeholder="Gender" asp-for="Gender" readonly/>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="table-wrapper table-responsive">
+            <table class="table table-bordered mt-3 table-hover">
+                <thead>
+                    <tr>
+                        <th width="80">No.</th>
+                        <th width="120">Action</th>
+                        <th width="120">Promote</th>
+                        <th>Role Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var role in Model.Roles!)
+                    {
+                        index++;
+                        var Ischecked = role.IsChecked == true ? "checked" : "";
+
+                        <tr>
+                            <td>@index</td>
+                            <td>
+                                <input name="RoleName" value="@role.Name" hidden />
+                                <button class="btn btn-warning" id="buttonSaveId">Save</button>
+                            </td>
+                            <td>
+                                <input class="form-check" style="justify-self: center; width: 15px;" type="checkbox" name="IsCheck" @Ischecked />
+                            </td>
+                            <td>@role.Name</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    th{
+        text-align: center;
+    }
+
+    td{
+        text-align: center;
+        vertical-align: middle;
+    }
+</style>
+
+<script>
+    let userId = '@Model.UserId';
+    $(document).on('click', '#buttonSaveId', function() {
+        let closestTr = $(this).closest('tr');
+        let roleName = closestTr.find('input[name="RoleName"]').val();
+        let isChecked = closestTr.find('input[name="IsCheck"]').prop('checked');
+        console.log('Role ID: ', roleName);
+        console.log('Checkbox checked: ', isChecked);
+
+        $.post('/UserRoles/SaveUserRole', { userId: userId, roleName: roleName, isChecked: isChecked }, function(response) {
+            console.log(response.statusCode);
+        });
+    });
+</script>
+
+

@@ -1,0 +1,64 @@
+﻿@model SignUp
+@{
+    ViewData["Title"] = "Sign Up";
+}
+<h1>Sign Up</h1>
+<div class="card">
+    <div class="card-body">
+        <div class="container justify-content-center">
+            <form asp-action="SignUp" asp-controller="Home" method="post">
+                <div class="row">
+                    <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                        <label asp-for="FirstName">First Name</label>
+                        <input class="form-control" asp-for="FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                        <label asp-for="LastName">Last Name</label>
+                        <input class="form-control" asp-for="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                        <label asp-for="DateOfBirth">Date Of Birth</label>
+                        <input class="form-control" type="date" asp-for="DateOfBirth" />
+                        <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                        <label asp-for="Gender">Gender</label>
+                        <select class="form-control" asp-for="Gender">
+                            <option value="0">Male</option>
+                            <option value="1">Female</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                        <label asp-for="Email">Email</label>
+                        <input class="form-control" asp-for="Email" />
+                    </div>
+
+                    <div class="form-group col-lg-6 col-xl-6 col-sm-12 col-12 mt-2">
+                        <label asp-for="Password">Password</label>
+                        <input class="form-control" asp-for="Password" type="password" />
+                    </div>
+                </div>
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="btn btn-primary mt-3" type="submit">Sign Up</button>
+                </div>
+            </form>
+
+            <div class="alert alert-info mt-3">
+                If you have already an account, please <a asp-action="SignIn" asp-controller="Home">Sign In</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let loginButton = document.getElementById('userbtn');
+    loginButton.textContent = "Sign In";
+    loginButton.setAttribute('href', "/Home/SignIn");
+</script>

@@ -1,0 +1,72 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "User Schedules";
+    int index = 0;
+}
+
+<style>
+    thead {
+        background-color: #0d6efd;
+        color: white;
+        position: sticky;
+        top: -1px;
+    }
+
+    th {
+        border-bottom: 1px solid #dddddd;
+    }
+
+    .table-wrapper {
+        max-height: 75vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+</style>
+
+<h1>Schedule</h1>
+<div class="card">
+    <div class="card-header d-flex justify-content-between">
+        <a href="/Home/Index" class="btn btn-primary">Back</a>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="80">No.</th>
+                        <th style="min-width: 120px;">Schedule Type</th>
+                        <th style="min-width: 120px;">Coach Name</th>
+                        <th style="min-width: 120px; text-align: center;">Gym Hall Room</th>
+                        <th class="text-center" style="min-width: 100px;">Start Time</th>
+                        <th class="text-center" style="min-width: 100px;">End Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var schedule in Model)
+                    {
+                        index++;
+                        var TypeName = schedule.Type == "1" ? "Individual" : "Group Training";
+                        <tr>
+                            <td class="text-center">@index</td>
+                            <td>@TypeName</td>
+                            <td>@schedule.CoachName</td>
+                            <td class="text-center">@schedule.GymHallName</td>
+                            <td class="text-center">@schedule.StartTime.ToString("hh:mm tt")</td>
+                            <td class="text-center">@schedule.EndTime.ToString("hh:mm tt")</td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    td th {
+        vertical-align: middle;
+    }
+</style>
+
